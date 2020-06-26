@@ -18,8 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivPoster"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:textAppearance="@android:style/TextAppearance.Large"
         tools:text="Movie Title" />
 
@@ -30,12 +30,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTitle"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
         android:numStars="5"
         android:progressBackgroundTint="@android:color/white"
         android:progressTint="#FFE53B"
         android:stepSize="0.5" />
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/rbVoteAverage"
+        android:textColor="@color/blockText"
+        tools:text="Genre1, Genre2" />
 
     <TextView
         android:id="@+id/tvOverview"
@@ -44,9 +55,9 @@
         android:layout_below="@+id/rbVoteAverage"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="5dp"
         android:textColor="@color/blockText"
         tools:text="Movie Overview" />
 
@@ -55,7 +66,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvOverview"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="0dp"
         android:text="@string/watchTrailer"
         android:textSize="20sp" />
@@ -65,7 +78,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/trailerText"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
         tools:ignore="MissingConstraints" />
 
 </RelativeLayout>

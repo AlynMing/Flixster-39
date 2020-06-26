@@ -3,7 +3,6 @@ package com.example.flixster.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
-import com.example.flixster.databinding.ActivityMovieDetailsBinding;
 import com.example.flixster.models.Movie;
 
 import org.parceler.Parcels;
@@ -35,7 +33,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.movies = movies;
     }
 
-    // Involves inflating a layout from XML and returning the holder
+    /** Inflates a layout from XML and returns the ViewHolder. */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +41,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return new ViewHolder(movieView);
     }
 
-    // Involves populating data into the item through holder
+    /** Populates the Movie data into the ViewHolder. */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the movie at the passed in position
@@ -52,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.bind(movie);
     }
 
-    // Return the total count of items in the list
+    /** Returns the total number of items in the list of Movies. */
     @Override
     public int getItemCount() {
         return movies.size();
@@ -72,24 +70,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
         }
 
-        // when the user clicks on a row, show MovieDetailsActivity for the selected movie
+        /** When the user clicks on a row, show MovieDetailsActivity for the selected movie. */
         @Override
         public void onClick(View v) {
-            // get item position
+            // Get the position of the item being clicked on
             int position = getAdapterPosition();
-            // make sure the position is valid, i.e. actually exists in the view
+            // Make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
+                // Get the Movie object at the position
                 Movie movie = movies.get(position);
-                // create intent for the new activity
+                // Create an Intent for the new activity
                 Intent intent = new Intent(context, MovieDetailsActivity.class);
-                // serialize the movie using parceler, use its short name as a key
+                // Serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
-                // show the activity
+                // Show the activity (MovieDetailsActivity)
                 context.startActivity(intent);
             }
         }
 
+        /** Populate the views with the image/text data*/
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getOverview());
@@ -103,8 +102,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 placeholder = R.drawable.flicks_movie_placeholder;
             }
 
-            int radius = 30; // corner radius, higher value = more rounded
-            int margin = 5; // crop margin, set to 0 for corners with no crop
+            int radius = 30;
+            int margin = 5;
             Glide.with(context)
                     .load(imageUrl)
                     .placeholder(placeholder)

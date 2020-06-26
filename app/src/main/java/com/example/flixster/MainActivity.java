@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         // Set a Layout Manger on the recycler view
         rvMovies.setLayoutManager(new LinearLayoutManager(context));
 
+        // Get movies from The Movie Database API
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
+                    // Convert JSON information to Movie objects, then add to movies array
                     movies.addAll(Movie.fromJsonArray(context, results));
                     movieAdapter.notifyDataSetChanged();
                     Log.i(TAG, "Movies: " + movies.size());
@@ -75,8 +76,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure");
             }
         });
-
-
-
     }
 }
