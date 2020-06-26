@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.adapter.MovieAdapter;
+import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -23,27 +27,31 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    public static String NOW_PLAYING_URL;
     public static final String TAG = "MainActivity";
+    Context context = this;
 
     List<Movie> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + getString(R.string.movies_api_key);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+        RecyclerView rvMovies = binding.rvMovies;
         movies = new ArrayList<>();
 
         // Create the adapter
-        final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+        final MovieAdapter movieAdapter = new MovieAdapter(context, movies);
 
         // Set the adapter on the recycler view
         rvMovies.setAdapter(movieAdapter);
 
         // Set a Layout Manger on the recycler view
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        rvMovies.setLayoutManager(new LinearLayoutManager(context));
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
@@ -54,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
-                    movies.addAll(Movie.fromJsonArray(results));
+                    movies.addAll(Movie.fromJsonArray(context, results));
                     movieAdapter.notifyDataSetChanged();
                     Log.i(TAG, "Movies: " + movies.size());
                 } catch (JSONException e) {
@@ -67,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure");
             }
         });
+
+
 
     }
 }
