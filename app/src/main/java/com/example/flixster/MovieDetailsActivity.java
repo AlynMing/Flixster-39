@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.databinding.ActivityMovieDetailsBinding;
@@ -25,11 +28,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
 
 public class MovieDetailsActivity extends YouTubeBaseActivity {
 
     Movie movie;
+    ImageView ivBackdrop;
     TextView tvTitle;
     TextView tvOverview;
     RatingBar rbVoteAverage;
@@ -44,6 +49,7 @@ public class MovieDetailsActivity extends YouTubeBaseActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        ivBackdrop = binding.ivPoster;
         tvTitle = binding.tvTitle;
         tvOverview = binding.tvOverview;
         rbVoteAverage = binding.rbVoteAverage;
@@ -52,6 +58,25 @@ public class MovieDetailsActivity extends YouTubeBaseActivity {
         // unwrap the movie passed in via intent, using its simple name as a key
         movie = Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s'", movie.getTitle()));
+
+        // set backdrop image
+        String imageUrl;
+        int placeholder;
+        if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            imageUrl = movie.getPosterPath();
+            placeholder = R.drawable.flicks_movie_placeholder;
+        } else {
+            imageUrl = movie.getBackdropPath();
+            placeholder = R.drawable.flicks_backdrop_placeholder;
+        }
+        int radius = 30; // corner radius, higher value = more rounded
+        int margin = 5; // crop margin, set to 0 for corners with no crop
+        Glide.with(context)
+                .load(imageUrl)
+                .placeholder(placeholder)
+                .fitCenter()
+                .transform(new RoundedCornersTransformation(radius, margin))
+                .into(ivBackdrop);
 
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
@@ -71,25 +96,25 @@ public class MovieDetailsActivity extends YouTubeBaseActivity {
                     public void onPlaying() {
                         youTubePlayer.setFullscreen(true);
                     }
+                    @Override
+                    public void onPaused() { }
+                    @Override
+                    public void onStopped() { }
+                    @Override
+                    public void onBuffering(boolean b) { }
+                    @Override
+                    public void onSeekTo(int i) { }
+                });
+
+                youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
 
                     @Override
-                    public void onPaused() {
-
-                    }
-
-                    @Override
-                    public void onStopped() {
-
-                    }
-
-                    @Override
-                    public void onBuffering(boolean b) {
-
-                    }
-
-                    @Override
-                    public void onSeekTo(int i) {
-
+                    public void onFullscreen(boolean enteringFullscreen) {
+                        if(!enteringFullscreen) {
+                            youTubePlayer.pause();
+                        } else {
+                            youTubePlayer.play();
+                        }
                     }
                 });
             }

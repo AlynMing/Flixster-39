@@ -7,19 +7,22 @@
 
     <ImageView
         android:id="@+id/ivPoster"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="252dp"
+        android:layout_height="match_parent"
         android:contentDescription="@string/backdrop"
         tools:src="@tools:sample/avatars"
-        tools:srcCompat="@drawable/flicks_backdrop_placeholder" />
+        tools:srcCompat="@drawable/flicks_movie_placeholder" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPoster"
-        android:layout_marginStart="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivPoster"
         android:textAppearance="@android:style/TextAppearance.Large"
         tools:text="Movie Title" />
 
@@ -29,9 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTitle"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ivPoster"
         android:numStars="5"
         android:progressBackgroundTint="@android:color/white"
         android:progressTint="#FFE53B"
@@ -42,30 +45,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rbVoteAverage"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivPoster"
         android:textColor="@color/blockText"
         tools:text="Movie Overview" />
 
     <TextView
         android:id="@+id/trailerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_below="@id/tvOverview"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@id/ivPoster"
         android:text="@string/watchTrailer"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/player"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/trailerText"
+        android:layout_toEndOf="@+id/ivPoster"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:layout_width="wrap_content" />
 
 </RelativeLayout>
